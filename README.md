@@ -1,4 +1,4 @@
-# Blinkbox::Cucumber::Helpers
+# Cucumber::Blinkbox
 
 A selection of blinkbox books specific helpers for cucumber tests.
 
