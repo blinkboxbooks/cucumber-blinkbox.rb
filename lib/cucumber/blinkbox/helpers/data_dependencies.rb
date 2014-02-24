@@ -9,7 +9,8 @@ module KnowsAboutDataDependencies
     end
   end
 
-  def data_for_a(object, which: "is currently available for purchase", but_isnt: nil)
+  def data_for_a(object, which: nil, but_isnt: nil)
+    raise ArgumentError, "Please specify a condition using `which:`" if which.nil?
     data = @@data_dependencies[object.to_s][which]
 
     if data.respond_to? :sample
