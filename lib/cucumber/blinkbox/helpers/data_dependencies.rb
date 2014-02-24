@@ -5,13 +5,13 @@ module KnowsAboutDataDependencies
     base.instance_eval do
       path = TEST_CONFIG["data.yml"] || "config/data.yml"
       raise "The data dependencies file does not exist at #{path}" unless File.exist?(path)
-      @@data_dependencies = YAML.load_file(path)
+      @data_dependencies = YAML.load_file(path)
     end
   end
 
   def data_for_a(object, which: nil, but_isnt: nil)
     raise ArgumentError, "Please specify a condition using `which:`" if which.nil?
-    data = @@data_dependencies[object.to_s][which]
+    data = @data_dependencies[object.to_s][which]
 
     if data.respond_to? :sample
       data.delete_if { |item| item == but_isnt } if but_isnt
