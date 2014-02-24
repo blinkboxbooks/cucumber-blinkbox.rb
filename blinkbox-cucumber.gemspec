@@ -3,7 +3,7 @@ lib = File.join(__dir__,'lib')
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = "blinkbox-cucumber-helpers"
+  spec.name          = "blinkbox-cucumber"
   spec.version       = ::File.read("VERSION")
   spec.authors       = ["blinkbox books"]
   spec.email         = ["jphastings@blinkbox.com"]
