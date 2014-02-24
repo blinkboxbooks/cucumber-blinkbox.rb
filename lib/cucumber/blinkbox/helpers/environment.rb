@@ -31,10 +31,5 @@ module KnowsAboutTheEnvironment
   def test_env
     @test_env
   end
-
-  # legacy - use test_env.servers
-  def servers
-    @servers ||= test_env.servers
-  end
 end
 World(KnowsAboutTheEnvironment)

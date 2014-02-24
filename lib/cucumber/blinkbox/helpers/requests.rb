@@ -39,7 +39,7 @@ module KnowsAboutApiRequests
   end
 
   def qualified_uri(server, path)
-    uri = servers[server.to_sym]
+    uri = test_env[server.to_sym]
     path = path[1..-1] if path.start_with?("/")
     URI.join(uri.to_s, path)
   end

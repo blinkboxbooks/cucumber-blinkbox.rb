@@ -41,7 +41,7 @@ object:
 When a step is defined which needs access to data dependent information:
 
 ```ruby
-require "blinkbox/cucumber/helpers/data_dependencies"
+require "cucumber/blinkbox/helpers/data_dependencies"
 
 Given(/^there is a book I'm allowed to buy$/) do
   @book = data_for_a(:book, which: "is currently available for purchase")
@@ -67,10 +67,12 @@ qa:
 When a step is defined which needs the base URI for a service:
 
 ```ruby
-require "blinkbox/cucumber/helpers/environments"
+require "cucumber/blinkbox/helpers/environments"
 
 When(/^I have a chat with the auth server$/) do
-  TotallyRealHTTPClient.get servers[:api]
+  TotallyRealHTTPClient.get test_env[:auth]
+  # or
+  TotallyRealHTTPClient.get test_env.auth
 end
 ```
 
@@ -119,7 +121,7 @@ World(KnowsAboutCartoonServiceResponseValidation)
 When steps are defined which validate the format of an item or list response:
 
 ```ruby
-require "blinkbox/cucumber/helpers/response_validation"
+require "cucumber/blinkbox/helpers/response_validation"
 
 Then(/^the response is a (.+)$/) do |item_type|
   validate_entity(item_type.snake_case, parse_response_data)
