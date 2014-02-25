@@ -24,7 +24,7 @@ module KnowsAboutTheEnvironment
       raise "The environments file does not exist at #{path}" unless File.exist?(path)
       env = YAML.load_file(path)[TEST_CONFIG["server"].downcase]
       raise "Environment '#{TEST_CONFIG["server"]}' is not defined in environments.yml" if env.nil?
-      @test_env =  EnvStruct.new(env)
+      @test_env = EnvStruct.new(env)
     end
   end
 

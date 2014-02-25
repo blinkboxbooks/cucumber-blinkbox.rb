@@ -40,6 +40,7 @@ module KnowsAboutApiRequests
 
   def qualified_uri(server, path)
     uri = test_env.servers[server.to_sym]
+    raise "Test Error: #{server} doesn't appear to be defined in the environments.yml" if uri.nil?
     path = path[1..-1] if path.start_with?("/")
     URI.join(uri.to_s, path)
   end
@@ -71,11 +72,7 @@ module KnowsAboutApiRequests
   private
 
   def format_body(body)
-    if body.is_a?(Hash)
-      JSON.dump(body)
-    else
-      body
-    end
+    body.is_a?(Hash) ? JSON.dump(body) : body
   end
 
   # So that we don't have to put enum parameters in the Gherkin in SCREAMING_SNAKE_CASE this heuristic identifies
