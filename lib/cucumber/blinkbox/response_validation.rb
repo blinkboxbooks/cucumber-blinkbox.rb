@@ -62,22 +62,33 @@ module KnowsAboutResponseValidation
     end
   end
 
+  # Validates a list of items is in the standardised blinkbox books format.
+  #
+  # @param options [Hash] Options for the validation.
+  # @option options [String] :item_type The (snake cased) name of the items in the list, and the validation method (`validate_item_type`) that will be used to test them.
+  # @option options [String] :list_type The (snake cased) name of the list type to be validated. Corresponds to the schema urn of `urn:blinkboxbooks:schema:listtypelist` and will look for the method `validate_list_of_list_type`.
+  # @option options [Integer] :min_count The minimum number of items there must be.
+  # @option options [Integer] :max_count The maximum number of items there can be.
+  # @option options [Integer] :count The exact number of items there must be. (Is overridden by min_ and max_count)
+  # @option options [Integer] :offset The offset expected for the data (used for ensuring the `offset` value is correct)
   def validate_list(data, options = {})
-    list_type = options[:list_type] || ""
+    list_type = options[:list_type]
     item_type = options[:item_type]
     min_count = options[:min_count] || options[:count] || 0
     max_count = options[:max_count] || options[:count] || 1000000
     offset = options[:offset] || 0
 
     # TODO: Should this be :list:#{list_type} rather than the list type before list?
-    expected_type = "urn:blinkboxbooks:schema:#{list_type.tr(" ", "")}list"
+    expected_type = "urn:blinkboxbooks:schema:#{(list_type || "").tr("_", "")}list"
     validate_attribute(data, "type", type: String) { |value| expect(value).to eq(expected_type) }
-    # TODO: validate_attribute(data, "count", type: Integer) { |value| should === min_count..max_count }
-    # TODO: validate_attribute(data, "offset", type: Integer) { |value| expect(value).to == offset }
-    # TODO: validate_attribute(data, "numberOfResults", type: Integer) { |value| expect(value).to > data["count"] }
+    validate_attribute(data, "count", type: Integer) { |value| should === min_count..max_count }
+    validate_attribute(data, "offset", type: Integer) { |value| expect(value).to == offset }
+    validate_attribute(data, "numberOfResults", type: Integer) { |value| expect(value).to > data["count"] }
 
-    further_validation = "validate_list_of_#{list_type.tr(" ","_")}".to_sym
-    send(further_validation, data) if respond_to?(further_validation)
+    unless list_type.nil?
+      further_validation = "validate_list_of_#{list_type}".to_sym
+      send(further_validation, data) if respond_to?(further_validation)
+    end
 
     if data["items"] || min_count > 0
       validate_attribute(data, "items", type: Array) do |value|
@@ -88,10 +99,7 @@ module KnowsAboutResponseValidation
         end
       end
       unless item_type.nil?
-        item_validation_method = "validate_#{list_type.tr(" ","_")}".to_sym
-        unless self.respond_to?(item_validation_method)
-          item_validation_method = "validate_#{item_type.downcase[0...-2] + "y"}".to_sym if item_type.end_with?("ie")
-        end
+        item_validation_method = "validate_#{item_type}".to_sym
         data["items"].each { |item| self.send(item_validation_method, item) }
       end
     end
