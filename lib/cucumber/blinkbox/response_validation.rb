@@ -33,7 +33,7 @@ module KnowsAboutResponseValidation
       expect(value).to match(/#{Regexp.escape(expected_content)}/) unless expected_content.nil?
       yield value if block_given?
     rescue => e
-      message = "'#{name}' is invalid: #{e.message}"
+      message = "'#{name}' is invalid:\n#{e.message}"
       send((options[:warn_only] ? "puts" : "raise").to_sym, message)
     end
   end
