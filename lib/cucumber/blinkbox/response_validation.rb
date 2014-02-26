@@ -33,13 +33,15 @@ module KnowsAboutResponseValidation
       expect(value).to match(/#{Regexp.escape(expected_content)}/) unless expected_content.nil?
       yield value if block_given?
     rescue => e
-      raise "'#{name}' is invalid: #{e.message}"
+      message = "'#{name}' is invalid:\n#{e.message}"
+      send((options[:warn_only] ? "puts" : "raise").to_sym, message)
     end
   end
 
-  def validate_entity(data, type)
-    validate_attribute(data, "type", type: String) { |value| expect(value).to eq("urn:blinkboxbooks:schema:#{type}") }
-    validate_attribute(data, "guid", type: String) { |value| expect(value).to start_with "urn:blinkboxbooks:id:#{type}:#{data["id"]}" }
+  def validate_entity(data, type, options = {})
+    warn_only = options[:warn_only] || []
+    validate_attribute(data, "type", type: String, warn_only: warn_only.include?(:type)) { |value| expect(value).to eq("urn:blinkboxbooks:schema:#{type}") }
+    validate_attribute(data, "guid", type: String, warn_only: warn_only.include?(:guid)) { |value| expect(value).to start_with "urn:blinkboxbooks:id:#{type}:#{data["id"]}" }
   end
 
   def validate_link(data)
@@ -65,25 +67,28 @@ module KnowsAboutResponseValidation
   # Validates a list of items is in the standardised blinkbox books format.
   #
   # @param options [Hash] Options for the validation.
-  # @option options [String] :item_type The (snake cased) name of the items in the list, and the validation method (`validate_item_type`) that will be used to test them.
-  # @option options [String] :list_type The (snake cased) name of the list type to be validated. Corresponds to the schema urn of `urn:blinkboxbooks:schema:listtypelist` and will look for the method `validate_list_of_list_type`.
+  # @option options [String] :item_type The (singular, snake cased) name of the items in the list, and the validation method (`validate_item_type`) that will be used to test them.
+  # @option options [String] :list_type The (signular, snake cased) name of the list type to be validated. Corresponds to the schema urn of `urn:blinkboxbooks:schema:listtypelist` and will look for the method `validate_list_of_list_type`.
   # @option options [Integer] :min_count The minimum number of items there must be.
   # @option options [Integer] :max_count The maximum number of items there can be.
   # @option options [Integer] :count The exact number of items there must be. (Is overridden by min_ and max_count)
   # @option options [Integer] :offset The offset expected for the data (used for ensuring the `offset` value is correct)
+  # @option options [Array<Symbol>] :warn_only Ask the validator to be lenient while testing the specified attributes (NB. Use snake_case)
   def validate_list(data, options = {})
     list_type = options[:list_type]
     item_type = options[:item_type]
     min_count = options[:min_count] || options[:count] || 0
     max_count = options[:max_count] || options[:count] || 1000000
     offset = options[:offset] || 0
+    warn_only = options[:warn_only] || []
 
     # TODO: Should this be :list:#{list_type} rather than the list type before list?
     expected_type = "urn:blinkboxbooks:schema:#{(list_type || "").tr("_", "")}list"
-    validate_attribute(data, "type", type: String) { |value| expect(value).to eq(expected_type) }
-    validate_attribute(data, "count", type: Integer) { |value| should === min_count..max_count }
-    validate_attribute(data, "offset", type: Integer) { |value| expect(value).to == offset }
-    validate_attribute(data, "numberOfResults", type: Integer) { |value| expect(value).to > data["count"] }
+    validate_attribute(data, "type",            type: String,  warn_only: warn_only.include?(:type))              { |value| expect(value).to eq(expected_type) }
+    validate_attribute(data, "count",           type: Integer, warn_only: warn_only.include?(:count))             { |value| expect(min_count..max_count).to cover(value) }
+    validate_attribute(data, "offset",          type: Integer, warn_only: warn_only.include?(:offset))            { |value| expect(value).to eq(offset) }
+    validate_attribute(data, "numberOfResults", type: Integer, warn_only: warn_only.include?(:number_of_results)) { |value| expect(value).to be >= data["count"] }
+    validate_attribute(data, "items",           type: Array,   warn_only: warn_only.include?(:empty_items))
 
     unless list_type.nil?
       further_validation = "validate_list_of_#{list_type}".to_sym
