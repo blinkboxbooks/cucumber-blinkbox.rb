@@ -88,6 +88,7 @@ module KnowsAboutResponseValidation
     validate_attribute(data, "count",           type: Integer, warn_only: warn_only.include?(:count))             { |value| expect(min_count..max_count).to cover(value) }
     validate_attribute(data, "offset",          type: Integer, warn_only: warn_only.include?(:offset))            { |value| expect(value).to eq(offset) }
     validate_attribute(data, "numberOfResults", type: Integer, warn_only: warn_only.include?(:number_of_results)) { |value| expect(value).to be >= data["count"] }
+    validate_attribute(data, "items",           type: Array,   warn_only: warn_only.include?(:empty_items))
 
     unless list_type.nil?
       further_validation = "validate_list_of_#{list_type}".to_sym
