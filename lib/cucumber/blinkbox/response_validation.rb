@@ -39,8 +39,9 @@ module KnowsAboutResponseValidation
   end
 
   def validate_entity(data, type, options = {})
-    validate_attribute(data, "type", type: String, warn_only: options[:warn_only].include?(:type)) { |value| expect(value).to eq("urn:blinkboxbooks:schema:#{type}") }
-    validate_attribute(data, "guid", type: String, warn_only: options[:warn_only].include?(:guid)) { |value| expect(value).to start_with "urn:blinkboxbooks:id:#{type}:#{data["id"]}" }
+    warn_only = options[:warn_only] || []
+    validate_attribute(data, "type", type: String, warn_only: warn_only.include?(:type)) { |value| expect(value).to eq("urn:blinkboxbooks:schema:#{type}") }
+    validate_attribute(data, "guid", type: String, warn_only: warn_only.include?(:guid)) { |value| expect(value).to start_with "urn:blinkboxbooks:id:#{type}:#{data["id"]}" }
   end
 
   def validate_link(data)
