@@ -34,13 +34,13 @@ module KnowsAboutResponseValidation
       yield value if block_given?
     rescue => e
       message = "'#{name}' is invalid: #{e.message}"
-      send((options[:mulligan] ? "puts" : "raise").to_sym, message)
+      send((options[:warn_only] ? "puts" : "raise").to_sym, message)
     end
   end
 
   def validate_entity(data, type, options = {})
-    validate_attribute(data, "type", type: String, mulligan: options[:mulligan].include?(:type)) { |value| expect(value).to eq("urn:blinkboxbooks:schema:#{type}") }
-    validate_attribute(data, "guid", type: String, mulligan: options[:mulligan].include?(:guid)) { |value| expect(value).to start_with "urn:blinkboxbooks:id:#{type}:#{data["id"]}" }
+    validate_attribute(data, "type", type: String, warn_only: options[:warn_only].include?(:type)) { |value| expect(value).to eq("urn:blinkboxbooks:schema:#{type}") }
+    validate_attribute(data, "guid", type: String, warn_only: options[:warn_only].include?(:guid)) { |value| expect(value).to start_with "urn:blinkboxbooks:id:#{type}:#{data["id"]}" }
   end
 
   def validate_link(data)
@@ -72,21 +72,21 @@ module KnowsAboutResponseValidation
   # @option options [Integer] :max_count The maximum number of items there can be.
   # @option options [Integer] :count The exact number of items there must be. (Is overridden by min_ and max_count)
   # @option options [Integer] :offset The offset expected for the data (used for ensuring the `offset` value is correct)
-  # @option options [Array<Symbol>] :mulligan Ask the validator to be lenient while testing the specified attributes (NB. Use snake_case)
+  # @option options [Array<Symbol>] :warn_only Ask the validator to be lenient while testing the specified attributes (NB. Use snake_case)
   def validate_list(data, options = {})
     list_type = options[:list_type]
     item_type = options[:item_type]
     min_count = options[:min_count] || options[:count] || 0
     max_count = options[:max_count] || options[:count] || 1000000
     offset = options[:offset] || 0
-    mulligan = options[:mulligan] || []
+    warn_only = options[:warn_only] || []
 
     # TODO: Should this be :list:#{list_type} rather than the list type before list?
     expected_type = "urn:blinkboxbooks:schema:#{(list_type || "").tr("_", "")}list"
-    validate_attribute(data, "type",            type: String,  mulligan: mulligan.include?(:type))              { |value| expect(value).to eq(expected_type) }
-    validate_attribute(data, "count",           type: Integer, mulligan: mulligan.include?(:count))             { |value| expect(min_count..max_count).to cover(value) }
-    validate_attribute(data, "offset",          type: Integer, mulligan: mulligan.include?(:offset))            { |value| expect(value).to eq(offset) }
-    validate_attribute(data, "numberOfResults", type: Integer, mulligan: mulligan.include?(:number_of_results)) { |value| expect(value).to be >= data["count"] }
+    validate_attribute(data, "type",            type: String,  warn_only: warn_only.include?(:type))              { |value| expect(value).to eq(expected_type) }
+    validate_attribute(data, "count",           type: Integer, warn_only: warn_only.include?(:count))             { |value| expect(min_count..max_count).to cover(value) }
+    validate_attribute(data, "offset",          type: Integer, warn_only: warn_only.include?(:offset))            { |value| expect(value).to eq(offset) }
+    validate_attribute(data, "numberOfResults", type: Integer, warn_only: warn_only.include?(:number_of_results)) { |value| expect(value).to be >= data["count"] }
 
     unless list_type.nil?
       further_validation = "validate_list_of_#{list_type}".to_sym
