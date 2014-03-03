@@ -110,8 +110,7 @@ module KnowsAboutResponseValidation
     end
   end
 
-  def validate_list_order(data, order, descending)
-    attribute_name = Blinkbox::Test::Api::Json.attr_name(order)
+ def validate_list_order(data, attribute_name, descending: false)
     attribute_values = data["items"].map.with_index do |item, index|
       value = item[attribute_name]
       expect(value).to_not be_nil, "'#{attribute_name}' is nil in item at index #{index}"
