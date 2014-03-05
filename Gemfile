@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "http://gems.mobcastdev.com/"
+source "https://rubygems.org"
 
-# Specify your gem's dependencies in blinkbox-cucumber-helpers.gemspec
 gemspec
