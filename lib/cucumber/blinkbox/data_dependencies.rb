@@ -9,13 +9,18 @@ module KnowsAboutDataDependencies
     end
   end
 
-  def data_for_a(object, which: nil, but_isnt: nil)
+  def data_for_a(object, which: nil, but_isnt: nil, instances: nil)
     raise ArgumentError, "Please specify a condition using `which:`" if which.nil?
     data = @data_dependencies[object.to_s][which] rescue nil
 
     if data.respond_to? :sample
       data.delete_if { |item| item == but_isnt } if but_isnt
-      data = data.sample
+      if instances
+        pending "Test error: There are not enough examples defined for a #{object} which #{which}" unless data.size >= instances
+        data = data.sample(instances)
+      else
+        data = data.sample
+      end
     end
 
     pending "Test error: There is no data dependency defined for a #{object} which #{which}" unless data

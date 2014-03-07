@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 (2014-03-06 16:19)
+
+### New Features
+
+- The `data_for_a` method allows to specify the number of objects to return.
+
+
 ## 0.1.0 (2014-03-05 13:37)
 
 ### New Features
