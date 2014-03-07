@@ -16,7 +16,7 @@ module KnowsAboutDataDependencies
     if data.respond_to? :sample
       data.delete_if { |item| item == but_isnt } if but_isnt
       if instances
-        pending "Test error: There is not enough examples defined for a #{object} which #{which}" unless data.size >= instances
+        pending "Test error: There are not enough examples defined for a #{object} which #{which}" unless data.size >= instances
         data = data.sample(instances)
       else
         data = data.sample
