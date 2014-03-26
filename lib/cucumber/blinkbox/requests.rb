@@ -41,8 +41,7 @@ module KnowsAboutApiRequests
   def qualified_uri(server, path)
     uri = test_env.servers[server.to_sym]
     raise "Test Error: #{server} doesn't appear to be defined in the environments.yml" if uri.nil?
-    path = path[1..-1] if path.start_with?("/")
-    URI.join(uri.to_s, path)
+    File.join(uri.to_s, path)
   end
 
   # request methods
