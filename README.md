@@ -6,7 +6,7 @@ A selection of blinkbox books specific helpers for cucumber tests.
 
 Add this line to your application's Gemfile:
 
-    gem 'cucumber-blinkbox-helpers'
+    gem 'cucumber-blinkbox'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install cucumber-blinkbox-helpers
+    $ gem install cucumber-blinkbox
 
 ## Usage
 
