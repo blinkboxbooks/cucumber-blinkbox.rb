@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 (2014-03-26 14:17)
+
+### Bug fix
+
+- `URI.join` doesn't work well with colons in paths, so swapped to `File.join` (which joins with `/` even on windows)
+
 ## 0.2.0 (2014-03-06 16:19)
 
 ### New Features
