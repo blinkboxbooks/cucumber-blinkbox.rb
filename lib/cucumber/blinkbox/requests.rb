@@ -26,15 +26,20 @@ module KnowsAboutApiRequests
   end
 
   def set_query_param(name, value)
-    name = name.camel_case
-    value = is_enum_param(name) ? value.snake_case(:upper) : value
-    current_value = query[name]
-    if current_value.nil?
-      query[name] = value
-    elsif current_value.is_a?(Array)
-      query[name] << value
+    if value.respond_to?(:each)
+      value.each { |v| set_query_param(name, v) }
     else
-      query[name] = [current_value, value]
+      name = name.camel_case
+      value = is_enum_param(name) ? value.snake_case(:upper) : value
+      current_value = query[name]
+
+      if current_value.nil?
+        query[name] = value
+      elsif current_value.is_a?(Array)
+        query[name] << value
+      else
+        query[name] = [current_value, value]
+      end
     end
   end
 
