@@ -29,15 +29,15 @@ module KnowsAboutApiRequests
     if value.respond_to?(:each)
       value.each { |v| set_query_param(name, v) }
     else
-        name = name.camel_case
-        value = is_enum_param(name) ? value.snake_case(:upper) : value
-        current_value = query[name]
+      name = name.camel_case
+      value = is_enum_param(name) ? value.snake_case(:upper) : value
+      current_value = query[name]
 
-        if current_value.nil?
+      if current_value.nil?
         query[name] = value
-        elsif current_value.is_a?(Array)
+      elsif current_value.is_a?(Array)
         query[name] << value
-        else
+      else
         query[name] = [current_value, value]
       end
     end
