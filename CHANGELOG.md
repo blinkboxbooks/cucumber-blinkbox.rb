@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 (2014-04-03)
+
+### Clean up
+
+- Cleaned up custom html formatter: removed unnecessary #after_table_row which is overridden later on in the formatter file
+
 ## 0.2.1 (2014-03-26 14:17)
 
 ### Bug fix
