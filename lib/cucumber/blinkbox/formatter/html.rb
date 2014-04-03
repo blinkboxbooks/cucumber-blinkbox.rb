@@ -82,28 +82,6 @@ module Cucumber
           end
         end
 
-        def after_table_row(table_row)
-          return if @hide_this_step
-          print_table_row_messages
-          @builder << '</tr>'
-          if table_row.exception
-            @builder.tr do
-              @builder.td(:colspan => @col_index.to_s, :class => 'failed') do
-                @builder.pre do |pre|
-                  pre << format_exception(table_row.exception)
-                end
-              end
-            end
-            save_screenshot_with_filename_based_on(table_row)
-            set_scenario_color_failed
-          end
-          if @outline_row
-            @outline_row += 1
-          end
-          @step_number += 1
-          move_progress
-        end
-
         #override to set color of pending exceptions backtraces to Yellow instead of Red (and thus not make the whole scenario Red)
         def after_table_row(table_row)
           return if @hide_this_step
