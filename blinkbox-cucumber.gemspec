@@ -22,5 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "httpclient"
   spec.add_runtime_dependency "http_capture"
   spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "rspec", "~> 2.99"
   spec.add_development_dependency "rake"
 end
