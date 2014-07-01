@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.3 ([#9](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/9) 2014-06-30 17:06:16)
+
+Update to artifactory spec
+
+### Improvements
+
+- Moved to using Artifactory.
+
 ## 0.2.2 (2014-04-03)
 
 ### Clean up
