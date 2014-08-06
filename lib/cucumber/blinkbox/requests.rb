@@ -3,6 +3,8 @@ module KnowsAboutApiRequests
   
   def http_client
     @http ||= HTTPClient.new(TEST_CONFIG["proxy"])
+    # Ensure we're using the system SSL certs, as per other libraries (like HTTParty)
+    @http.ssl_config.set_trust_ca(OpenSSL::X509::DEFAULT_CERT_FILE)
     @http.debug_dev = STDOUT if TEST_CONFIG["debug"]
     #@http.reset_all
     @http
