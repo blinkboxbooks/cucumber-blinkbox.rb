@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 ([#11](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/11) 2014-08-06 16:41:20)
+
+Enable SSL cert loading
+
+### New Feature
+
+- [CP-1708](http://jira.blinkbox.local/jira/browse/CP-1708) Forces HTTPClient to use the OpenSSL default certificate file in order for it to act in a similar fashion to HTTParty and other gems (for testing).
+
 ## 0.2.3 ([#9](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/9) 2014-06-30 17:06:16)
 
 Update to artifactory spec
