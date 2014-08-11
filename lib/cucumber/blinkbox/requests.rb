@@ -61,12 +61,12 @@ module KnowsAboutApiRequests
 
   def http_post(server, path, body = {}, header = {})
     uri = qualified_uri(server, path)
-    @response = http_client.post(uri, body: format_body(body), header: request_headers(header.merge({"Content-Type" => CONTENT_TYPE})))
+    @response = http_client.post(uri, body: format_body(body), header: request_headers({"Content-Type" => CONTENT_TYPE}.merge(header)))
   end
 
   def http_put(server, path, body = {}, header = {})
     uri = qualified_uri(server, path)
-    @response = http_client.put(uri, body: format_body(body), header: request_headers(header.merge({"Content-Type" => CONTENT_TYPE})))
+    @response = http_client.put(uri, body: format_body(body), header: request_headers({"Content-Type" => CONTENT_TYPE}.merge(header)))
   end
 
   def http_delete(server, path, header = {})
