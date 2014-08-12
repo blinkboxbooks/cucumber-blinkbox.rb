@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 ([#12](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/12) 2014-08-11 17:18:58)
+
+Default Content-Type header behaviour
+
+### Patch
+
+- Get the RSpec tests runnable under CI
+- Default to a Content-Type when not specified, otherwise take the user defined value
+
 ## 0.3.0 ([#11](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/11) 2014-08-06 16:41:20)
 
 Enable SSL cert loading
