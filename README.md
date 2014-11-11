@@ -67,7 +67,7 @@ qa:
 When a step is defined which needs the base URI for a service:
 
 ```ruby
-require "cucumber/blinkbox/environments"
+require "cucumber/blinkbox/environment"
 
 When(/^I have a chat with the auth server$/) do
   TotallyRealHTTPClient.get test_env[:auth]
