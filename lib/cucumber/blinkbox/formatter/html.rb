@@ -28,7 +28,10 @@ module Cucumber
             $(SCENARIOS).css('cursor', 'pointer');
             $(SCENARIOS).click(function() {
               $(this).siblings().toggle(250, function(){
-              $(this).siblings(".tag").show();});
+                $(this).siblings(".tag").show();  
+                $(this).siblings(".examples").show();
+                $(this).siblings(".examples").children().show();
+              });
             });
 
             $("#collapser").css('cursor', 'pointer');
