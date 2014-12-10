@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.2 ([#13](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/13) 2014-12-10 17:03:42)
+
+Add a general require's file to avoid having projects need to declare requiring each module individually if applicable
+
+Patch
+
+Gives projects that currently require each module explicitly an option to pull them all in by calling `require cucumber/blinkbox`
+
 ## 0.3.1 ([#12](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/12) 2014-08-11 17:18:58)
 
 Default Content-Type header behaviour
