@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.3 ([#10](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/10) 2014-12-10 17:21:43)
+
+TTWG-69 - HTML report does not have screenshots for failures in scenario...
+
+improvement
+
+http://jira.blinkbox.local/jira/browse/TTWG-69
+
 ## 0.3.2 ([#13](https://git.mobcastdev.com/TEST/cucumber-blinkbox/pull/13) 2014-12-10 17:03:42)
 
 Add a general require's file to avoid having projects need to declare requiring each module individually if applicable
