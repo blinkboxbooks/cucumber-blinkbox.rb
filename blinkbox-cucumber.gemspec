@@ -1,5 +1,5 @@
 # coding: utf-8
-lib = File.join(__dir__,'lib')
+lib = File.join(File.dirname(__FILE__),'lib')
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jphastings@blinkbox.com"]
   spec.description   = %q{blinkbox books specific cucumber test helpers}
   spec.summary       = %q{blinkbox books specific cucumber test helpers}
-  spec.homepage      = "https://git.mobcastdev.com/TEST/blinkbox-cucumber-helpers"
+  spec.homepage      = "http://blinkboxbooks.github.io/"
   spec.license       = "MIT"
 
   spec.files         = [*Dir["{lib,bin,spec}/**/*.rb"], "VERSION"]
